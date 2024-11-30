@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using MoveOn.Models;
+using System.Net;
 
 namespace MoveOn
 { 
@@ -12,7 +13,8 @@ namespace MoveOn
 
             Console.WriteLine("Hello, World!");
             User user = new User();
-            onRegister(user);
+            
+            Console.WriteLine(onLogIn(null, null));
             
         }
 
@@ -21,13 +23,40 @@ namespace MoveOn
             try
             {
                 using (var Db = new HealthAppContext(configuration))
-                {   //PasswordHasher(user.userPassword); //предполагемо               
+                {   //PasswordHasher(user.userPassword); //предполагаемо               
                     Db.Users.Add(user);
                     Db.SaveChanges();
                 }
             }
             catch (Exception ex) { Console.WriteLine(ex.ToString()); }
         }
+
+
+        static public string onLogIn(string username, string password) {//отново предполагаемо идват от мобилното приложение
+
+            using (var Db = new HealthAppContext(configuration))
+            {
+
+                var user = Db.Users
+
+                        .Where(b => b.UserName.Equals(username))
+                .Single();
+
+                if (/*passwordVerifier(password, user.UserPassword) && user != null*/ true) //проверяваме дали паролата е вярна и дали всъщност има такъв потребител
+                {
+                    //някаква логика за аутентикация дали било с токен или при опит за достъп на определени данни
+
+                    return "success";//
+                }
+                else { return "wrong username/password"; }
+
+
+            }
+
+        }
+
+
+
       static public void configurationfunc() {
             configuration = new ConfigurationBuilder()
 .SetBasePath(AppContext.BaseDirectory) // Set the base path to the current directory
