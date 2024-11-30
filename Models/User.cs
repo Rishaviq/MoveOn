@@ -19,5 +19,7 @@ public partial class User
 
     public string? UserDiet { get; set; }
 
+    public string? UserPassword { get; set; }
+
     public virtual Condition? UserCondition { get; set; }
 }

@@ -141,6 +141,9 @@ public partial class HealthAppContext : DbContext
             entity.Property(e => e.UserName)
                 .HasMaxLength(45)
                 .HasColumnName("userName");
+            entity.Property(e => e.UserPassword)
+                .HasMaxLength(45)
+                .HasColumnName("userPassword");
             entity.Property(e => e.UserWeight)
                 .HasMaxLength(45)
                 .HasColumnName("userWeight");
