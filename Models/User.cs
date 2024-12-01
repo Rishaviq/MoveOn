@@ -21,5 +21,7 @@ public partial class User
 
     public string? UserPassword { get; set; }
 
+    public virtual ICollection<ExcerciseRecord> ExcerciseRecords { get; set; } = new List<ExcerciseRecord>();
+
     public virtual Condition? UserCondition { get; set; }
 }

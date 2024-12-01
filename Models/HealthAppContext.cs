@@ -9,12 +9,12 @@ namespace MoveOn.Models;
 public partial class HealthAppContext : DbContext
 {
     private readonly IConfiguration _configuration;
-    public HealthAppContext()
-    {
-    }
     public HealthAppContext(IConfiguration configuration)
     {
         _configuration = configuration;
+    }
+    public HealthAppContext()
+    {
     }
 
     public HealthAppContext(DbContextOptions<HealthAppContext> options)
@@ -34,7 +34,7 @@ public partial class HealthAppContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseMySql(_configuration["SQL:connection"], Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.31-mysql"));
+        => optionsBuilder.UseMySql("server=localhost;database=health_app;user=root;password=Supermen30", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.31-mysql"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -81,6 +81,8 @@ public partial class HealthAppContext : DbContext
 
             entity.HasIndex(e => e.ExcerciseRecordsExercise, "exercise id_idx");
 
+            entity.HasIndex(e => e.ExcerciseRecordsUser, "user ids_idx");
+
             entity.Property(e => e.IdexcerciseRecords).HasColumnName("idexcercise_records");
             entity.Property(e => e.ExcerciseRecordsDate)
                 .HasColumnType("datetime")
@@ -92,6 +94,10 @@ public partial class HealthAppContext : DbContext
             entity.HasOne(d => d.ExcerciseRecordsExerciseNavigation).WithMany(p => p.ExcerciseRecords)
                 .HasForeignKey(d => d.ExcerciseRecordsExercise)
                 .HasConstraintName("exercise id");
+
+            entity.HasOne(d => d.ExcerciseRecordsUserNavigation).WithMany(p => p.ExcerciseRecords)
+                .HasForeignKey(d => d.ExcerciseRecordsUser)
+                .HasConstraintName("user ids");
         });
 
         modelBuilder.Entity<ExercisePerCondition>(entity =>

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using MoveOn.Models;
 using System;
 using System.Collections.Generic;
@@ -56,6 +57,20 @@ namespace MoveOn.ActionClasses
             
             
          //save(target)   //тук записваме желаните повторения отново в json файла, като те биха били сврзани със упражненията, на който са направени
+        }
+
+
+        public void onExerciseHistoryLoad(DateTime date1,DateTime date2,string user) {//дадени от приложението
+
+            using (var Db = new HealthAppContext(configuration))
+            {
+                var exercises = Db.ExcerciseRecords
+                    .Include(ex=>ex.ExcerciseRecordsUserNavigation)
+                    .Where(ex=> ex.ExcerciseRecordsDate>=date1 && ex.ExcerciseRecordsDate <= date2 && ex.ExcerciseRecordsUserNavigation.UserName==user)
+                    .ToList();//вимаме всичките направени упражнения и техните повторения за да може да се представи дадения прогрес
+               
+                //логика за това как всъщност да се представят данните
+            }
         }
     }
 }

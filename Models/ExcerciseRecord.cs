@@ -16,4 +16,6 @@ public partial class ExcerciseRecord
     public DateTime? ExcerciseRecordsDate { get; set; }
 
     public virtual Excercise? ExcerciseRecordsExerciseNavigation { get; set; }
+
+    public virtual User? ExcerciseRecordsUserNavigation { get; set; }
 }
